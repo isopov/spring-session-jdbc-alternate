@@ -11,24 +11,18 @@ import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
-import org.testcontainers.containers.PostgreSQLContainer;
 
 import com.sopovs.moradanen.spring.session.JdbcOperationsSessionRepositoryAlternate.JdbcSession;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 public class JdbcOperationsSessionRepositoryAlternateTest {
-
-	@Rule
-	public PostgreSQLContainer postgres = new PostgreSQLContainer();
-
 	private JdbcOperationsSessionRepositoryAlternate repository;
 	private HikariDataSource ds;
 	private JdbcTemplate template;
@@ -39,9 +33,9 @@ public class JdbcOperationsSessionRepositoryAlternateTest {
 	public void setup() {
 		HikariConfig hikariConfig = new HikariConfig();
 		hikariConfig.setMaximumPoolSize(1);
-		hikariConfig.setJdbcUrl(postgres.getJdbcUrl());
-		hikariConfig.setUsername(postgres.getUsername());
-		hikariConfig.setPassword(postgres.getPassword());
+		hikariConfig.setJdbcUrl("jdbc:postgresql://localhost/sessiontest");
+		hikariConfig.setUsername("sessiontest");
+		hikariConfig.setPassword("sessiontest");
 
 		ds = new HikariDataSource(hikariConfig);
 		DataSourceTransactionManager tm = new DataSourceTransactionManager(ds);
@@ -61,6 +55,8 @@ public class JdbcOperationsSessionRepositoryAlternateTest {
 
 	@After
 	public void tearDown() {
+		template.execute("DROP TABLE IF EXISTS " + DEFAULT_TABLE_NAME + "_ATTRIBUTES");
+		template.execute("DROP TABLE IF EXISTS " + DEFAULT_TABLE_NAME);
 		ds.close();
 	}
 
