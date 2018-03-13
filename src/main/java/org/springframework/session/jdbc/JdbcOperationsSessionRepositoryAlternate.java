@@ -697,7 +697,7 @@ public class JdbcOperationsSessionRepositoryAlternate
 			while (rs.next()) {
 				UUID id = new UUID(rs.getLong("SESSION_ID1"), rs.getLong("SESSION_ID2"));
 				JdbcSession session;
-				if (sessions.size() > 0 && getLast(sessions).getId().equals(id)) {
+				if (sessions.size() > 0 && getLast(sessions).id.equals(id)) {
 					session = getLast(sessions);
 				} else {
 					MapSession delegate = new MapSession(id.toString());
