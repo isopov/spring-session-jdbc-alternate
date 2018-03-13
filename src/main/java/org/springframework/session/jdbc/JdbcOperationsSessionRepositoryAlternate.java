@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sopovs.moradanen.spring.session;
+package org.springframework.session.jdbc;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
