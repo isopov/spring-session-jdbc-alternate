@@ -56,6 +56,14 @@ public class JdbcOperationsSessionRepositoryAlternateTest extends AbstractJdbcOp
 	}
 
 	@Test
+	public void testTwoAttributes() {
+		session.setAttribute("foo", "bar");
+		session.setAttribute("bar", "foo");
+		altRepository.save(session);
+		assertSessionEquals(altRepository.findById(session.getId()));
+	}
+
+	@Test
 	public void testSaveChangedSessionId() {
 		altRepository.save(session);
 		session.changeSessionId();
